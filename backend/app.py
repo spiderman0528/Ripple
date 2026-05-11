@@ -12,10 +12,14 @@ jwt.init_app(app)
 CORS(app)
 
 from routes.auth import auth
+from routes.posts import posts
+
 app.register_blueprint(auth, url_prefix='/auth')
+app.register_blueprint(posts, url_prefix='/posts')
 
 with app.app_context():
     from models.user import User
+    from models.post import Post
     db.create_all()
 
 @app.route('/')
