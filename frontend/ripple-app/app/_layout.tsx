@@ -38,6 +38,13 @@ export default function Layout() {
           tabBarIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>✏️</Text>,
         }}
       />
+      <Tabs.Screen
+        name="signup"
+        options={{
+          title: 'Sign Up',
+          tabBarIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>✨</Text>,
+        }}
+      />
     </Tabs>
   );
 }
