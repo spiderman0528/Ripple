@@ -45,6 +45,20 @@ export default function Layout() {
           tabBarIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>✨</Text>,
         }}
       />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: 'Profile',
+          tabBarIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>⚡</Text>,
+        }}
+      />
+      <Tabs.Screen
+        name="groups"
+        options={{
+          title: 'Circles',
+          tabBarIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>👥</Text>,
+        }}
+      />
     </Tabs>
   );
 }
