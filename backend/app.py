@@ -17,11 +17,13 @@ from routes.auth import auth
 from routes.posts import posts
 from routes.groups import groups
 from routes.battles import battles
+from routes.leaderboard import leaderboard
 
 app.register_blueprint(auth, url_prefix='/auth')
 app.register_blueprint(posts, url_prefix='/posts')
 app.register_blueprint(groups, url_prefix='/groups')
 app.register_blueprint(battles, url_prefix='/battles')
+app.register_blueprint(leaderboard, url_prefix='/leaderboard')
 
 with app.app_context():
     from models.user import User
@@ -36,5 +38,5 @@ def home():
 
 if __name__ == '__main__':
     import os
-port = int(os.environ.get('PORT', 5000))
-app.run(debug=False, host='0.0.0.0', port=port)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(debug=False, host='0.0.0.0', port=port)
