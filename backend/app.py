@@ -24,6 +24,8 @@ app.register_blueprint(posts, url_prefix='/posts')
 app.register_blueprint(groups, url_prefix='/groups')
 app.register_blueprint(battles, url_prefix='/battles')
 app.register_blueprint(leaderboard, url_prefix='/leaderboard')
+from routes.search import search
+app.register_blueprint(search, url_prefix='/search')
 
 with app.app_context():
     from models.user import User
