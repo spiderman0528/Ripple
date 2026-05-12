@@ -16,15 +16,18 @@ CORS(app)
 from routes.auth import auth
 from routes.posts import posts
 from routes.groups import groups
+from routes.battles import battles
 
 app.register_blueprint(auth, url_prefix='/auth')
 app.register_blueprint(posts, url_prefix='/posts')
 app.register_blueprint(groups, url_prefix='/groups')
+app.register_blueprint(battles, url_prefix='/battles')
 
 with app.app_context():
     from models.user import User
     from models.post import Post
     from models.group import Group
+    from models.battle import Battle, BattleEntry
     db.create_all()
 
 @app.route('/')
