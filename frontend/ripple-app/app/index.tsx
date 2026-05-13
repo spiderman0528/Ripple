@@ -1,20 +1,20 @@
 import { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useAuth } from '../context/AuthContext';
+import { router } from 'expo-router';
 
 const API_URL = 'http://127.0.0.1:5000';
 
 export default function LoginScreen() {
+  const { login } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
 
   const handleLogin = async () => {
     setError('');
-    setSuccess('');
     if (!email.trim() || !password.trim()) {
       setError('Please fill in all fields');
       return;
@@ -22,9 +22,8 @@ export default function LoginScreen() {
     setLoading(true);
     try {
       const response = await axios.post(`${API_URL}/auth/login`, { email, password });
-      await AsyncStorage.setItem('token', response.data.token);
-      await AsyncStorage.setItem('user', JSON.stringify(response.data.user));
-      setSuccess(`Welcome back, ${response.data.user.username}! 🌊`);
+      await login(response.data.user, response.data.token);
+      router.replace('/feed');
     } catch (err) {
       setError('Invalid email or password');
     }
@@ -37,7 +36,6 @@ export default function LoginScreen() {
       <Text style={styles.tagline}>Where moments become waves</Text>
 
       {error ? <Text style={styles.errorText}>{error}</Text> : null}
-      {success ? <Text style={styles.successText}>{success}</Text> : null}
 
       <TextInput
         style={styles.input}
@@ -65,6 +63,10 @@ export default function LoginScreen() {
       >
         <Text style={styles.buttonText}>{loading ? 'Logging in...' : 'Log In'}</Text>
       </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => router.push('/signup')}>
+        <Text style={styles.signupLink}>Don't have an account? Sign up</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -80,7 +82,6 @@ const styles = StyleSheet.create({
   logo: { fontSize: 48, marginBottom: 8 },
   tagline: { fontSize: 16, color: '#7F77DD', marginBottom: 48 },
   errorText: { color: '#ff6b6b', marginBottom: 16, textAlign: 'center', fontSize: 14 },
-  successText: { color: '#6bffb8', marginBottom: 16, textAlign: 'center', fontSize: 14 },
   input: {
     width: '100%',
     backgroundColor: '#1a1a2e',
@@ -102,4 +103,5 @@ const styles = StyleSheet.create({
   },
   buttonDisabled: { backgroundColor: '#3a3a6e' },
   buttonText: { color: '#ffffff', fontSize: 16, fontWeight: 'bold' },
+  signupLink: { color: '#7F77DD', marginTop: 24, fontSize: 14 },
 });

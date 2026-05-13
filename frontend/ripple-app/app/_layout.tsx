@@ -1,33 +1,48 @@
 import { Tabs } from 'expo-router';
 import { Text } from 'react-native';
+import { AuthProvider, useAuth } from '../context/AuthContext';
+import { ThemeProvider, useTheme } from '../context/ThemeContext';
 
-export default function Layout() {
+function TabLayout() {
+  const { user } = useAuth();
+  const { theme } = useTheme();
+
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          backgroundColor: '#0a0a0f',
-          borderTopColor: '#1a1a2e',
+          backgroundColor: theme.tabBar,
+          borderTopColor: theme.border,
           borderTopWidth: 1,
           paddingBottom: 8,
           height: 60,
         },
-        tabBarActiveTintColor: '#7F77DD',
-        tabBarInactiveTintColor: '#444',
+        tabBarActiveTintColor: theme.accent,
+        tabBarInactiveTintColor: theme.textTertiary,
       }}
     >
       <Tabs.Screen
         name="index"
         options={{
           title: 'Login',
+          href: user ? null : '/index',
           tabBarIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>👤</Text>,
+        }}
+      />
+      <Tabs.Screen
+        name="signup"
+        options={{
+          title: 'Sign Up',
+          href: user ? null : '/signup',
+          tabBarIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>✨</Text>,
         }}
       />
       <Tabs.Screen
         name="feed"
         options={{
           title: 'Feed',
+          href: user ? '/feed' : null,
           tabBarIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>🌊</Text>,
         }}
       />
@@ -35,20 +50,15 @@ export default function Layout() {
         name="create"
         options={{
           title: 'Create',
+          href: user ? '/create' : null,
           tabBarIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>✏️</Text>,
-        }}
-      />
-      <Tabs.Screen
-        name="signup"
-        options={{
-          title: 'Sign Up',
-          tabBarIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>✨</Text>,
         }}
       />
       <Tabs.Screen
         name="profile"
         options={{
           title: 'Profile',
+          href: user ? '/profile' : null,
           tabBarIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>⚡</Text>,
         }}
       />
@@ -56,6 +66,7 @@ export default function Layout() {
         name="groups"
         options={{
           title: 'Circles',
+          href: user ? '/groups' : null,
           tabBarIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>👥</Text>,
         }}
       />
@@ -63,6 +74,7 @@ export default function Layout() {
         name="battles"
         options={{
           title: 'Battles',
+          href: user ? '/battles' : null,
           tabBarIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>⚔️</Text>,
         }}
       />
@@ -70,6 +82,7 @@ export default function Layout() {
         name="leaderboard"
         options={{
           title: 'Ranks',
+          href: user ? '/leaderboard' : null,
           tabBarIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>🏆</Text>,
         }}
       />
@@ -77,9 +90,20 @@ export default function Layout() {
         name="search"
         options={{
           title: 'Search',
+          href: user ? '/search' : null,
           tabBarIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>🔍</Text>,
         }}
       />
     </Tabs>
+  );
+}
+
+export default function Layout() {
+  return (
+    <ThemeProvider>
+      <AuthProvider>
+        <TabLayout />
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
