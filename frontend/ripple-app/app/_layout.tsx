@@ -39,6 +39,14 @@ function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="videos"
+        options={{
+          title: 'Videos',
+          href: user ? '/videos' : null,
+          tabBarIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>🎬</Text>,
+        }}
+      />
+      <Tabs.Screen
         name="feed"
         options={{
           title: 'Feed',
